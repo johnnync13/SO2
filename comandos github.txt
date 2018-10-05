@@ -1,0 +1,57 @@
+—COMANDOS COMUNES--- 
+git status- Informacion del repositorio
+git clone- Clonar repositorio
+git diff -Mostrar diferencias de código.
+git add [archivo] - añadir archivo. Incorporar cambios para el commit. Como marcar un checkbox.
+git reset [archivo] - Contrario al add. Deshacer.
+git rm [archivo] - Borrar archivo de la repo.
+git commit + i - añadir commit. 
+git commit -m “Comentario” - Comentario de una linea.
+git commit -am “Mensaje” - Commit de todos los archivos que se agreguen.
+git commit —amend -Si se te ha olvidado hacer algo después de hacer un commit.(No usar con código pusheado)
+ 
+git reset —soft HEAD-1 - Deshacer commit sin borrar archivo.
+git push -Subir al GitHub.
+git remote - servidor donde subir código.
+git remote -v -Direccion URL.
+git push remoto(origin) [rama]. -Subir todo al repositorio.
+git pull remoto [rama]-Descargar código.
+git log - Historial.
+git gc -Borrar recolector de basura.
+—RAMAS—
+git branch -Te dice las ramas que tienes
+git branch [Rama] -Crear rama.
+git checkout [rama] - Cambiar a esa rama.
+git branch -d [rama] - Eliminar rama. (No siempre funciona ,Comprueba que no pierdes trabajo)
+git branch -D [rama] - Obligar a la rama a ser eliminada.
+ 
+—Ramas en Paralelo—
+Creo el commit
+Cambio a la rama master.
+git checkout -b [nombre]- Crea nueva rama y te vas a ella.
+git log —graph —decórate —online — all -Historial gráfico.
+ 
+—Fusionar Ramas — 
+Voy a master.
+git merge [RAMA] -- Merge a master.
+Cambiar archivos - 2 operaciones. rm y add
+ 
+—Creando un issue—
+Desde la página.
+Cada issue tiene una referencia #
+En el commit referenciar con #.
+Fuentes:
+**Negrita**
+_Cursiva_
+* Lista 
+- [ ] checkbox
+Lock -Para solo discutir la gente que ya ha comentado
+ 
+—Cerrar isue con commit —
+Closes #2 
+ 
+—FORK—
+Contribuir
+Hacer una copia.
+—Pull request—
+Meter código en el código de otra persona.
