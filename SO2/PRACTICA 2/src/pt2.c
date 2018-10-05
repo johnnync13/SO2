@@ -1,31 +1,76 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "red-black-tree.h"
+#include "linked-list.h"
 
-int compara (const void *p1, const void *p2) {
-	return strcmp (*((char **) p2), *((char **) p1));
+#define MAXCHAR  100
+
+void obtainInformation(){
+	    //Declaracio de variables del programa.
+    char str[100];
+    char *cadena;
+    int maxLine;
+    FILE *fp = fopen("dades/aeroports.csv", "r");
+
+    rb_tree *tree;
+    node_data *n_data;
+
+    printf("Anem a carregar un fichers de vols");
+    if (fp == NULL)
+    {
+        perror("Error opening file");
+        return (-1);
+    }
+
+    /* Allocate memory for tree */
+    tree = (rb_tree *)malloc(sizeof(rb_tree));
+
+    /* Initialize the tree */
+    init_tree(tree);
+
+    if (fgets(str, 100, fp) != NULL)
+    {
+        maxLine = atoi(str);
+        //cadena = malloc(sizeof(char*) * maxLine);
+        while (fgets(str, 100, fp) != NULL)
+        {
+            int i = 0;
+            int len = strlen(str);
+            str[len - 1] = '\0';
+            cadena = malloc(sizeof(char) * len);
+            strcpy(cadena, str);
+            printf("\n%s", cadena);
+            /* Search if the key is in the tree */
+            n_data = find_node(tree, cadena);
+            if (n_data != NULL)
+            {
+                /* If the key is in the tree increment 'num' */
+                n_data->num_vegades++;
+            }
+            else
+            {
+                /* If the key is not in the tree, allocate memory for the data
+                * and insert in the tree */
+
+                n_data = malloc(sizeof(node_data));
+
+                /* This is the key by which the node is indexed in the tree */
+                n_data->key = cadena;
+
+                /* This is additional information that is stored in the tree */
+                n_data->num_vegades = 1;
+
+                /* We insert the node in the tree */
+                insert_node(tree, n_data);
+            }
+            i++;
+        }
+    }
+    printf("\nFitxer llegit correctament...\n");
+
 }
 int main () {
-	FILE *fitxer;
-	int i, numEntrades;
-	char **vector;
-	char aux[30];
-	fitxer = fopen ("/dades/aeroports.txt", "r");
-	fgets (aux, 30, fitxer);
-	numEntrades = atoi (aux);
-	vector = (char **) malloc (numEntrades * sizeof (char*));
-	for (i = 0; i < numEntrades; i++) {
-		fgets (aux, 30, fitxer);
-		vector[i] = (char *) malloc (strlen (aux) * sizeof (char));
-		strcpy (vector[i], aux);
-		vector[i][strlen(aux)-1] = '\0';
-	}
-	fclose (fitxer);
-	qsort (vector, numEntrades, sizeof (char *), compara);
-	fitxer = fopen ("stringOredenatContingut.txt", "w");
-	for (i = 0; i < numEntrades; i++) fprintf (fitxer, "%s\n", vector[i]);
-	fclose (fitxer);
-	for (i = 0; i < numEntrades; i++) free (vector[i]);
-	free (vector);
+	obtainInformation();
 	return 0;
 }
