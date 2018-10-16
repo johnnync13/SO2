@@ -20,7 +20,7 @@
  *
  */
 
-#define LIST_KEY_TYPE int
+#define LIST_KEY_TYPE char*
 
 /**
  *
