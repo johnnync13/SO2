@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 /**
  * We include the linked-list.h header. Note the double
  * quotes.
@@ -28,8 +29,8 @@
 
 static void free_list_data(list_data *data)
 {
-	free (data->key);
-	free (data);
+  free(data->key);
+  free(data); 
 }
 
 /**
@@ -42,7 +43,12 @@ static void free_list_data(list_data *data)
 static int compare_key1_equal_key2(LIST_KEY_TYPE key1, LIST_KEY_TYPE key2)
 {
   int rc;
-  rc = strcmp(key1, key2) == 0 ? 1 : 0;
+
+  rc = 0;
+
+  if (strcmp(key1, key2) == 0)
+    rc = 1;
+
   return rc;
 }
 

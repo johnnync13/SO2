@@ -25,6 +25,7 @@
 #include <stdarg.h>
 
 #include "red-black-tree.h"
+#include "linked-list.h"
 
 /**
  *
@@ -37,7 +38,10 @@
 
 static void free_node_data(node_data *data)
 {
-    free(data);
+    free (data->key);
+	delete_list(data->l);
+	free (data->l);
+	free (data);
 }
 
 /**
@@ -50,7 +54,7 @@ static void free_node_data(node_data *data)
 static int compare_key1_less_than_key2(RBTREE_KEY_TYPE key1, RBTREE_KEY_TYPE key2)
 {
     int rc;
-    rc = strcmp(primary_key1, primary_key2) < 0 ? 1 : 0;
+    rc = strcmp(key1, key2) < 0 ? 1 : 0;
     return rc;
 }
 
@@ -64,7 +68,7 @@ static int compare_key1_less_than_key2(RBTREE_KEY_TYPE key1, RBTREE_KEY_TYPE key
 static int compare_key1_equal_to_key2(RBTREE_KEY_TYPE key1, RBTREE_KEY_TYPE key2)
 {
     int rc;
-    rc = strcmp(primary_key1, primary_key2) == 0 ? 1 : 0;
+    rc = strcmp(key1, key2) == 0 ? 1 : 0;
     return rc;
 }
 

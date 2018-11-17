@@ -6,8 +6,8 @@
  *
  *
  */
-
-#define RBTREE_KEY_TYPE int 
+#include "linked-list.h"
+#define RBTREE_KEY_TYPE char*
 
 /**
  *
@@ -28,6 +28,7 @@ typedef struct node_data_
     // This is the additional information that will be stored
     // within the structure. You may adapt it to your needs:
     // add or remove fields as you need.
+	list* l;
     int num_vegades;   
 } node_data; 
 
@@ -82,4 +83,21 @@ void init_tree(rb_tree *tree);
 void insert_node(rb_tree *tree, node_data *d);
 node_data *find_node(rb_tree *tree, RBTREE_KEY_TYPE key); 
 void delete_tree(rb_tree *tree);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
