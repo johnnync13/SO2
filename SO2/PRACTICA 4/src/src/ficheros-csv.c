@@ -68,8 +68,6 @@ rb_tree *create_tree(char *str_airports, char *str_dades)
     /* Tiempo cronologico */
     gettimeofday(&tv1, NULL);
     
-//----------------------PARTE CHUNGA-------------------------------------------
-    
     /* Hasta que no lleguemos al final del fichero ejecutamos */
     while (!final_fichero)
     {
@@ -89,17 +87,15 @@ rb_tree *create_tree(char *str_airports, char *str_dades)
         /* Esperamos a que finalizen todos los hilos */
         for (num_thread = 0; num_thread < THREADS; num_thread++)
         {
-            pthread_join (ntid[num_thread], check_hilos[num_thread]);
+            pthread_join (ntid[num_thread], &check_hilos[num_thread]);
         }
         
         /* Para cada hilo, comprobamos si alguno ha resultado */
         for (num_thread = 0; num_thread < THREADS; num_thread++)
             final_fichero |= (bool) check_hilos[num_thread];
-            
-        final_fichero = !final_fichero;
+        
         
     }
-//----------------------------------------------------------------------------    
     
     /* Tiempo cronologico */
     gettimeofday(&tv2, NULL);
@@ -291,9 +287,19 @@ void *read_airports_data (void *fp) {
     
     /* Reservamos memoria para las lineas que leeremos */
     lineas_informacion = (char **) malloc (N * sizeof (char *));
+    if (lineas_informacion == NULL)
+    {
+        printf ("Error pointer\n");
+        exit (-1);
+    }
     for (i = 0; i < N; i++)
     {
         lineas_informacion[i] = (char *) malloc (MAXCHAR * sizeof (char));
+        if (lineas_informacion[i] == NULL)
+        {
+            printf ("Error pointer\n");
+            exit (-1);
+        }
     }
     
     fp = (FILE *) fp;
@@ -307,13 +313,16 @@ void *read_airports_data (void *fp) {
      * informacion que nosotros a la vez
      */
     pthread_mutex_lock (&file_mutex);
+    //printf ("Locking file...\n");
     
     /* Leemos todas las lineas asociadas a nuestro hilo */
-    while (fgets(lineas_informacion[num_lineas_leidas], MAXCHAR, fp) != NULL &&
-        num_lineas_leidas < N)
+    for (num_lineas_leidas = 0; num_lineas_leidas < N; num_lineas_leidas++)
     {
-        num_lineas_leidas++;
+        if (fgets(lineas_informacion[num_lineas_leidas], MAXCHAR, fp) == NULL)
+            break;
     }
+    
+    //printf ("Lineas leidas: %d\n", num_lineas_leidas);
     
     /* Desbloqueamos el fichero de datos para que otros hilos puedan acceder
      * a la informacion
@@ -369,9 +378,9 @@ void *read_airports_data (void *fp) {
     /* Liberamos el vector de informacion leida */
     free (lineas_informacion);
     
-    bool check_final = num_lineas_leidas == N;
+    bool check_final = !(num_lineas_leidas == N);
     
-    printf ("%d\n", check_final);
+    //printf ("Final? %d\n", check_final);
     
     return (void *) check_final;
 }
